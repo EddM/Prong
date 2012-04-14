@@ -36,8 +36,13 @@ class GameWindow < Gosu::Window
     @player1.move_up    if button_down?(Gosu::KbW)
     @player2.move_down  if button_down?(Gosu::KbDown)
     @player2.move_up    if button_down?(Gosu::KbUp)
+    quit                if button_down?(Gosu::KbEscape)
     
     @ball.update
+  end
+  
+  def quit
+    exit(0)
   end
   
   def score!(player)
