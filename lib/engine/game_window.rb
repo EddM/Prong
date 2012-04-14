@@ -4,6 +4,9 @@ class GameWindow < Gosu::Window
   Width = 640
   Height = 480
   
+  ScoreColor = 0xffffff00
+  PaddleColor = 0xffffffff
+  
   attr_reader :player1, :player2
   
   def initialize
@@ -21,14 +24,10 @@ class GameWindow < Gosu::Window
     @player2.draw
     @ball.draw
     
-    @font.draw @player1.score.to_s, (Width * 0.25) - (@font.text_width(@player1.score.to_s) / 2), 10, 1, 1.0, 1.0, 0xffffff00
-    @font.draw @player2.score.to_s, (Width * 0.75) - (@font.text_width(@player2.score.to_s) / 2), 10, 1, 1.0, 1.0, 0xffffff00
+    @font.draw @player1.score.to_s, (Width * 0.25) - (@font.text_width(@player1.score.to_s) / 2), 10, 1, 1.0, 1.0, ScoreColor
+    @font.draw @player2.score.to_s, (Width * 0.75) - (@font.text_width(@player2.score.to_s) / 2), 10, 1, 1.0, 1.0, ScoreColor
     
     draw_line Width / 2, 0, 0x55ffffff, Width / 2, Height, 0x55ffffff
-  end
-  
-  def reset_ball!
-    @ball.reset!
   end
   
   def update

@@ -6,7 +6,7 @@ class Ball
   def initialize(game)
     @speed = InitialSpeed
     @game = game
-    @color = Gosu::Color.argb(0xffffffff)
+    @color = Gosu::Color.argb(GameWindow::PaddleColor)
     reset!
   end
     
