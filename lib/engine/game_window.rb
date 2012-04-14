@@ -45,11 +45,7 @@ class GameWindow < Gosu::Window
   end
   
   def score!(player)
-    if player == 0
-      @player1.score!
-    else
-      @player2.score!
-    end
+    self.instance_variable_get("@player#{player + 1}").score!
   end
   
 end
