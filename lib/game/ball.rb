@@ -1,4 +1,5 @@
 class Ball
+  include Rect
 
   Size = 20
   InitialSpeed = 3.0
@@ -6,6 +7,7 @@ class Ball
   def initialize(game)
     @speed = InitialSpeed
     @game = game
+    @width, @height = Size, Size
     @color = Gosu::Color.argb(GameWindow::PaddleColor)
     reset!
   end
@@ -19,10 +21,6 @@ class Ball
   
   def random_angle
     rand(2) == 1 ? rand(45) : 0 - rand(45)
-  end
-  
-  def rect
-    Rect.new(@x, @y, Size, Size)
   end
   
   def update
@@ -47,12 +45,12 @@ class Ball
   end
   
   def collides?
-    if rect.clips?(@game.player1.rect)
+    if self.clips?(@game.player1)
       @hdir = 0
       @speed += 0.2
     end
     
-    if rect.clips?(@game.player2.rect)
+    if self.clips?(@game.player2)
       @hdir = 1
       @speed += 0.2
     end

@@ -1,4 +1,5 @@
 class Player
+  include Rect
   
   Width   = 10
   Height  = 75
@@ -9,16 +10,13 @@ class Player
 
   def initialize(game, x, y)
     @game, @x, @y = game, x, y
+    @width, @height = Width, Height
     @score = 0
     @height = Height
   end
   
   def score!
     @score += 1
-  end
-  
-  def rect
-    Rect.new(@x, @y, Width, @height)
   end
 
   def move_down
