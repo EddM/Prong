@@ -8,8 +8,8 @@ class Player
   attr_accessor :y
   attr_reader :x, :score
 
-  def initialize(game, x, y)
-    @game, @x, @y = game, x, y
+  def initialize(x, y)
+    @x, @y = x, y
     @width, @height = Width, Height
     @score = 0
     @height = Height
@@ -32,7 +32,7 @@ class Player
   end
   
   def draw
-    @game.draw_quad @x, @y, Gosu::Color::WHITE,
+    GameWindow.current.draw_quad @x, @y, Gosu::Color::WHITE,
                     @x + Width, @y, Gosu::Color::WHITE,
                     @x, @y + @height, Gosu::Color::WHITE,
                     @x + Width, @y + @height, Gosu::Color::WHITE

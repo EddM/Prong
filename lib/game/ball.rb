@@ -4,9 +4,8 @@ class Ball
   Size = 20
   InitialSpeed = 3.0
   
-  def initialize(game)
+  def initialize
     @speed = InitialSpeed
-    @game = game
     @width, @height = Size, Size
     @color = Gosu::Color.argb(GameWindow::PaddleColor)
     reset!
@@ -45,12 +44,12 @@ class Ball
   end
   
   def collides?
-    if self.clips?(@game.player1)
+    if self.clips?(GameWindow.current.player1)
       @hdir = 0
       @speed += 0.2
     end
     
-    if self.clips?(@game.player2)
+    if self.clips?(GameWindow.current.player2)
       @hdir = 1
       @speed += 0.2
     end
@@ -65,17 +64,17 @@ class Ball
     
     if @x <= 0
       @hdir = 0
-      @game.score!(1)
+      GameWindow.current.score!(1)
       reset!
     elsif @x >= (GameWindow::Width - Size)
       @hdir = 1
-      @game.score!(0)
+      GameWindow.current.score!(0)
       reset!
     end
   end
   
   def draw
-    @game.draw_quad @x, @y, @color,
+    GameWindow.current.draw_quad @x, @y, @color,
                     @x + Size, @y, @color,
                     @x, @y + Size, @color,
                     @x + Size, @y + Size, @color

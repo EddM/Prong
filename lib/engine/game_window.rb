@@ -13,9 +13,9 @@ class GameWindow < Gosu::Window
    super(Width, Height, false)
    self.caption = 'Prong'
    
-   @player1 = Player.new(self, Offset, Offset)
-   @player2 = Player.new(self, Width - Offset - Player::Width, Height - Offset - Player::Height)
-   @ball = Ball.new(self)
+   @player1 = Player.new(Offset, Offset)
+   @player2 = Player.new(Width - Offset - Player::Width, Height - Offset - Player::Height)
+   @ball = Ball.new
    @font = Gosu::Font.new(self, Gosu::default_font_name, 32)
   end
   
@@ -35,7 +35,8 @@ class GameWindow < Gosu::Window
     @player1.move_up    if button_down?(Gosu::KbW)
     @player2.move_down  if button_down?(Gosu::KbDown)
     @player2.move_up    if button_down?(Gosu::KbUp)
-    quit                if button_down?(Gosu::KbEscape)
+    
+    quit if button_down?(Gosu::KbEscape)
     
     @ball.update
   end
@@ -46,6 +47,14 @@ class GameWindow < Gosu::Window
   
   def score!(player)
     self.instance_variable_get("@player#{player + 1}").score!
+  end
+  
+  def self.init!
+    @@current = GameWindow.new
+  end
+  
+  def self.current
+    @@current
   end
   
 end
