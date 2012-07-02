@@ -5,6 +5,7 @@ class Ball
   InitialSpeed = 3.0
   
   def initialize
+    @window = GameWindow.current
     @speed = InitialSpeed
     @width, @height = Size, Size
     @color = Gosu::Color.argb(GameWindow::PaddleColor)
@@ -12,30 +13,31 @@ class Ball
   end
     
   def reset!
-    @x, @y = (GameWindow::Width / 2) - (Size / 2), (GameWindow::Height / 2) - (Size / 2)
-    @hdir = rand(2)
-    @vdir = rand(2) #random_angle
+    midpoint = Size / 2
+    @x, @y = (GameWindow::Width / 2) - midpoint, (GameWindow::Height / 2) - midpoint
+    @hdir, @vdir = rand(2), rand(2)
     @speed = InitialSpeed
-  end
-  
-  def random_angle
-    rand(2) == 1 ? rand(45) : 0 - rand(45)
   end
   
   def update
     out_of_bounds?
     collides?
+    move!
+  end
+  
+  def move!
+    spd = speed
     
     if @hdir == 0
-      @x += speed
+      @x += spd
     else
-      @x -= speed
+      @x -= spd
     end
     
     if @vdir == 0
-      @y += speed
+      @y += spd
     else
-      @y -= speed
+      @y -= spd
     end
   end
   
@@ -44,40 +46,55 @@ class Ball
   end
   
   def collides?
-    if self.clips?(GameWindow.current.player1)
+    if self.clips?(@window.player1)
       @hdir = 0
-      @speed += 0.2
+      speed_up
     end
     
-    if self.clips?(GameWindow.current.player2)
+    if self.clips?(@window.player2)
       @hdir = 1
-      @speed += 0.2
+      speed_up
     end
+  end
+  
+  def speed_up
+    @speed += 0.2
+  end
+  
+  def vertical_bounce
+    if @y <= 0
+      @vdir = 0
+    elsif @y >= GameWindow::BottomBoundary
+      @vdir = 1
+    end
+  end
+  
+  def horizontal_bounce
+    if @x <= 0
+      @hdir = 0
+      score! 1
+    elsif @x >= GameWindow::RightBoundary
+      @hdir = 1
+      score! 0
+    end
+  end
+  
+  def score!(player)
+    @window.score! player
+    reset!
   end
   
   def out_of_bounds?
-    if @y <= 0
-      @vdir = 0
-    elsif @y >= (GameWindow::Height - Size)
-      @vdir = 1
-    end
-    
-    if @x <= 0
-      @hdir = 0
-      GameWindow.current.score!(1)
-      reset!
-    elsif @x >= (GameWindow::Width - Size)
-      @hdir = 1
-      GameWindow.current.score!(0)
-      reset!
-    end
+    vertical_bounce
+    horizontal_bounce    
   end
   
   def draw
+    right, bottom = @x + Size, @y + Size
     GameWindow.current.draw_quad @x, @y, @color,
-                    @x + Size, @y, @color,
-                    @x, @y + Size, @color,
-                    @x + Size, @y + Size, @color
+                    right, @y, @color,
+                    @x, bottom, @color,
+                    right, bottom, @color
   end
   
 end

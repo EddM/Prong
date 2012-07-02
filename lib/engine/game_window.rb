@@ -4,6 +4,9 @@ class GameWindow < Gosu::Window
   Width = 640
   Height = 480
   
+  RightBoundary = (Width - Ball::Size)
+  BottomBoundary = (Height - Ball::Size)
+  
   ScoreColor = 0xffffff00
   PaddleColor = 0xffffffff
   
@@ -12,11 +15,13 @@ class GameWindow < Gosu::Window
   def initialize
    super(Width, Height, false)
    self.caption = 'Prong'
+   @@current = self
    
    @player1 = Player.new(Offset, Offset)
    @player2 = Player.new(Width - Offset - Player::Width, Height - Offset - Player::Height)
    @ball = Ball.new
    @font = Gosu::Font.new(self, Gosu::default_font_name, 32)
+   @middle = Width / 2
   end
   
   def draw
@@ -24,21 +29,32 @@ class GameWindow < Gosu::Window
     @player2.draw
     @ball.draw
     
-    @font.draw @player1.score.to_s, (Width * 0.25) - (@font.text_width(@player1.score.to_s) / 2), 10, 1, 1.0, 1.0, ScoreColor
-    @font.draw @player2.score.to_s, (Width * 0.75) - (@font.text_width(@player2.score.to_s) / 2), 10, 1, 1.0, 1.0, ScoreColor
-    
-    draw_line Width / 2, 0, 0x55ffffff, Width / 2, Height, 0x55ffffff
+    draw_scores
+    draw_net
+  end
+  
+  def draw_scores
+    player1_score = @player1.score.to_s
+    player2_score = @player2.score.to_s
+    @font.draw player1_score, (Width * 0.25) - (@font.text_width(player1_score) / 2), 10, 1, 1.0, 1.0, ScoreColor
+    @font.draw player2_score, (Width * 0.75) - (@font.text_width(player2_score) / 2), 10, 1, 1.0, 1.0, ScoreColor
+  end
+  
+  def draw_net
+    draw_line @middle, 0, 0x55ffffff, @middle, Height, 0x55ffffff
   end
   
   def update
+    move_players
+    quit if button_down?(Gosu::KbEscape)
+    @ball.update
+  end
+  
+  def move_players
     @player1.move_down  if button_down?(Gosu::KbS)
     @player1.move_up    if button_down?(Gosu::KbW)
     @player2.move_down  if button_down?(Gosu::KbDown)
     @player2.move_up    if button_down?(Gosu::KbUp)
-    
-    quit if button_down?(Gosu::KbEscape)
-    
-    @ball.update
   end
   
   def quit
@@ -47,10 +63,6 @@ class GameWindow < Gosu::Window
   
   def score!(player)
     self.instance_variable_get("@player#{player + 1}").score!
-  end
-  
-  def self.init!
-    @@current = GameWindow.new
   end
   
   def self.current

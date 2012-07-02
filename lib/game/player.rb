@@ -32,10 +32,11 @@ class Player
   end
   
   def draw
+    right, bottom = @x + Width, @y + @height
     GameWindow.current.draw_quad @x, @y, Gosu::Color::WHITE,
-                    @x + Width, @y, Gosu::Color::WHITE,
-                    @x, @y + @height, Gosu::Color::WHITE,
-                    @x + Width, @y + @height, Gosu::Color::WHITE
+                    right, @y, Gosu::Color::WHITE,
+                    @x, bottom, Gosu::Color::WHITE,
+                    right, bottom, Gosu::Color::WHITE
   end
 
 end
