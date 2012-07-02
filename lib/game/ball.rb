@@ -46,15 +46,13 @@ class Ball
   end
   
   def collides?
-    if self.clips?(@window.player1)
-      @hdir = 0
-      speed_up
-    end
-    
-    if self.clips?(@window.player2)
-      @hdir = 1
-      speed_up
-    end
+    change_direction(0) if self.clips?(@window.player1)
+    change_direction(1) if self.clips?(@window.player2)
+  end
+  
+  def change_direction(dir)
+    @hdir = dir
+    speed_up
   end
   
   def speed_up
@@ -71,10 +69,8 @@ class Ball
   
   def horizontal_bounce
     if @x <= 0
-      @hdir = 0
       score! 1
     elsif @x >= GameWindow::RightBoundary
-      @hdir = 1
       score! 0
     end
   end
