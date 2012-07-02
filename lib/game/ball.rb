@@ -20,6 +20,7 @@ class Ball
   end
   
   def update
+    vertical_bounce
     out_of_bounds?
     collides?
     move!
@@ -67,22 +68,17 @@ class Ball
     end
   end
   
-  def horizontal_bounce
-    if @x <= 0
-      score! 1
-    elsif @x >= GameWindow::RightBoundary
-      score! 0
-    end
-  end
-  
   def score!(player)
     @window.score! player
     reset!
   end
   
   def out_of_bounds?
-    vertical_bounce
-    horizontal_bounce    
+    if @x <= 0
+      score! 1
+    elsif @x >= GameWindow::RightBoundary
+      score! 0
+    end
   end
   
   def draw
