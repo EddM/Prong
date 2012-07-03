@@ -10,7 +10,7 @@ class GameWindow < Gosu::Window
   ScoreColor = 0xffffff00
   PaddleColor = 0xffffffff
   
-  attr_reader :player1, :player2
+  attr_reader :player1, :player2, :audio
   
   def initialize
    super(Width, Height, false)
@@ -22,6 +22,7 @@ class GameWindow < Gosu::Window
    @ball = Ball.new
    @font = Gosu::Font.new(self, Gosu::default_font_name, 32)
    @middle = Width / 2
+   @audio = AudioLibrary.new
   end
   
   def draw

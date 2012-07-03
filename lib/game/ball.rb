@@ -47,13 +47,19 @@ class Ball
   end
   
   def collides?
-    change_direction(0) if self.clips?(@window.player1)
-    change_direction(1) if self.clips?(@window.player2)
+    change_horizontal_direction(0) if self.clips?(@window.player1)
+    change_horizontal_direction(1) if self.clips?(@window.player2)
   end
   
-  def change_direction(dir)
+  def change_horizontal_direction(dir)
+    @window.audio.play!(:paddle)
     @hdir = dir
     speed_up
+  end
+  
+  def change_vertical_direction(dir)
+    @vdir = dir
+    @window.audio.play!(:bounce)
   end
   
   def speed_up
@@ -62,15 +68,16 @@ class Ball
   
   def vertical_bounce
     if @y <= 0
-      @vdir = 0
+      change_vertical_direction(0)
     elsif @y >= GameWindow::BottomBoundary
-      @vdir = 1
+      change_vertical_direction(1)
     end
   end
   
   def score!(player)
     @window.score! player
     reset!
+    @window.audio.play!(:point)
   end
   
   def out_of_bounds?
