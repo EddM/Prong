@@ -17,12 +17,16 @@ class GameWindow < Gosu::Window
    super(Width, Height, false)
    self.caption = 'Prong'
    @@current = self
-   
-   @player1 = Player.new(Offset, Offset)
-   @player2 = Player.new(Width - Offset - Player::Width, Height - Offset - Player::Height)
-   @ball = Ball.new
    @font = Gosu::Font.new(self, Gosu::default_font_name, 32)
    @audio = AudioLibrary.new
+   
+   setup_entities
+  end
+  
+  def setup_entities
+    @player1 = Player.new(Offset, Offset)
+    @player2 = Player.new(Width - Offset - Player::Width, Height - Offset - Player::Height)
+    @ball = Ball.new
   end
   
   def draw
