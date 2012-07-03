@@ -3,7 +3,7 @@ class GameWindow < Gosu::Window
   Offset = 20
   Width = 640
   Height = 480
-  
+  Middle = Width / 2
   RightBoundary = (Width - Ball::Size)
   BottomBoundary = (Height - Ball::Size)
   
@@ -21,7 +21,6 @@ class GameWindow < Gosu::Window
    @player2 = Player.new(Width - Offset - Player::Width, Height - Offset - Player::Height)
    @ball = Ball.new
    @font = Gosu::Font.new(self, Gosu::default_font_name, 32)
-   @middle = Width / 2
    @audio = AudioLibrary.new
   end
   
@@ -42,7 +41,7 @@ class GameWindow < Gosu::Window
   end
   
   def draw_net
-    draw_line @middle, 0, 0x55ffffff, @middle, Height, 0x55ffffff
+    draw_line Middle, 0, 0x55ffffff, Middle, Height, 0x55ffffff
   end
   
   def update
