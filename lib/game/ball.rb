@@ -2,7 +2,9 @@ class Ball
   include Rect
 
   Size = 20
+  Midpoint = Size / 2
   InitialSpeed = 3.0
+  SpeedIncrement = 0.2
   
   def initialize
     @window = GameWindow.current
@@ -13,8 +15,7 @@ class Ball
   end
     
   def reset!
-    midpoint = Size / 2
-    @x, @y = (GameWindow::Width / 2) - midpoint, (GameWindow::Height / 2) - midpoint
+    @x, @y = GameWindow::HorizontalMiddle - Midpoint, GameWindow::VerticalMiddle - Midpoint
     @hdir, @vdir = rand(2), rand(2)
     @speed = InitialSpeed
   end
@@ -52,8 +53,8 @@ class Ball
   end
   
   def change_horizontal_direction(dir)
-    @window.audio.play!(:paddle)
     @hdir = dir
+    @window.audio.play!(:paddle)
     speed_up
   end
   
@@ -63,7 +64,7 @@ class Ball
   end
   
   def speed_up
-    @speed += 0.2
+    @speed += SpeedIncrement
   end
   
   def vertical_bounce
@@ -76,8 +77,8 @@ class Ball
   
   def score!(player)
     @window.score! player
-    reset!
     @window.audio.play!(:point)
+    reset!
   end
   
   def out_of_bounds?
@@ -90,10 +91,7 @@ class Ball
   
   def draw
     right, bottom = @x + Size, @y + Size
-    GameWindow.current.draw_quad @x, @y, @color,
-                    right, @y, @color,
-                    @x, bottom, @color,
-                    right, bottom, @color
+    @window.draw_quad @x, @y, @color, right, @y, @color, @x, bottom, @color, right, bottom, @color
   end
   
 end

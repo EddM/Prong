@@ -3,7 +3,8 @@ class GameWindow < Gosu::Window
   Offset = 20
   Width = 640
   Height = 480
-  Middle = Width / 2
+  HorizontalMiddle = Width / 2
+  VerticalMiddle = Height / 2
   RightBoundary = (Width - Ball::Size)
   BottomBoundary = (Height - Ball::Size)
   
@@ -41,7 +42,7 @@ class GameWindow < Gosu::Window
   end
   
   def draw_net
-    draw_line Middle, 0, 0x55ffffff, Middle, Height, 0x55ffffff
+    draw_line HorizontalMiddle, 0, 0x55ffffff, HorizontalMiddle, Height, 0x55ffffff
   end
   
   def update

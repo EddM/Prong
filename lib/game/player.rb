@@ -1,9 +1,9 @@
 class Player
   include Rect
   
-  Width   = 10
-  Height  = 75
-  Speed   = 10
+  Width = 10
+  Height = 75
+  Speed = 10
   
   attr_accessor :y
   attr_reader :x, :score
@@ -12,7 +12,7 @@ class Player
     @x, @y = x, y
     @width, @height = Width, Height
     @score = 0
-    @height = Height
+    @window = GameWindow.current
   end
   
   def score!
@@ -20,23 +20,16 @@ class Player
   end
 
   def move_down
-    unless (@y + 1) >= (GameWindow::Height - @height)
-      @y += Speed
-    end
+    @y += Speed unless (@y + 1) >= (GameWindow::Height - @height)
   end
   
   def move_up
-    unless (@y - 1) <= 0
-      @y -= Speed
-    end
+    @y -= Speed unless (@y - 1) <= 0
   end
   
   def draw
     right, bottom = @x + Width, @y + @height
-    GameWindow.current.draw_quad @x, @y, Gosu::Color::WHITE,
-                    right, @y, Gosu::Color::WHITE,
-                    @x, bottom, Gosu::Color::WHITE,
-                    right, bottom, Gosu::Color::WHITE
+    @window.draw_quad @x, @y, Gosu::Color::WHITE, right, @y, Gosu::Color::WHITE, @x, bottom, Gosu::Color::WHITE, right, bottom, Gosu::Color::WHITE
   end
 
 end
